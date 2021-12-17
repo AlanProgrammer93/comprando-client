@@ -1,0 +1,33 @@
+.Navbar-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Navbar-search input {
+    outline: none;
+    border: 1px solid var(--color-primary);
+    border-radius: 15px;
+    padding: 5px;
+    color: gray;
+}
+.Navbar-search svg {
+    color: deepskyblue;
+    font-size: 25px;
+    cursor: pointer;
+}
+.Home-left-handler {
+    margin: 25px;
+}
+.Home-left-handler ul li {
+    border: 1px solid var(--color-primary);
+    background-color: var(--color-primary);
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 5px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+.Home-left-handler ul li:hover {
+    background-color: var(--color-primary-dark);
+}
