@@ -1,18 +1,33 @@
 import React from 'react'
-import {AiOutlineHome, AiOutlineMessage} from 'react-icons/ai';
-import {TiMessages} from 'react-icons/ti';
-import {MdPersonOutline} from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { AiOutlineHome, AiOutlineMessage } from 'react-icons/ai';
+import { FiLogOut } from 'react-icons/fi';
+import { TiMessages } from 'react-icons/ti';
+import { MdPersonOutline } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './Navbar.css';
 
 const Navbar = () => {
+    const { user } = useSelector((state) => ({ ...state }));
+    const history = useNavigate()
+    const dispatch = useDispatch();
+
+    const logout = () => {
+        localStorage.removeItem('token')
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        history("/auth");
+    };
+
     return (
         <div className="Navbar">
-            <div className="Navbar-Logo">
+            <Link to="/" className="Navbar-Logo">
                 Comprando
-            </div>
-            
+            </Link>
+
             <div className="Navbar-Menu">
                 <Link to="/" className="Navbar-Menu-option">
                     <AiOutlineHome />
@@ -26,10 +41,14 @@ const Navbar = () => {
                     <AiOutlineMessage />
                     <p>Mensajes</p>
                 </a>
-                <Link to="/profile" className="Navbar-Menu-option">
+                <Link to={`/profile/${user?.id}`} className="Navbar-Menu-option">
                     <MdPersonOutline />
                     <p>Perfil</p>
                 </Link>
+                <div onClick={logout} style={{ cursor: 'pointer' }} className="Navbar-Menu-option">
+                    <FiLogOut />
+                    <p>Salir</p>
+                </div>
             </div>
 
         </div>

@@ -14,9 +14,9 @@ import Home from './pages/Home/Home';
 import Profile from './pages/Profile/Profile';
 
 import { currentUser } from './api/Auth';
+import { emitJoin, init } from './api/socket';
 
 import './App.css';
-
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +31,8 @@ function App() {
             type: 'LOGGED_IN_USER',
             payload: res.data.user
           });
+          init(dispatch)
+          emitJoin(res.data.user.id)
         })
         .catch(err => console.log(err));
     } 
@@ -45,7 +47,7 @@ function App() {
             {/* Rutas Privadas */}
             <Route element={<RequireAuth />}>
               <Route path="/" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:id" element={<Profile />} />
             </Route>
 
           {/* <Route path="*" element={<NotFound />} /> */}

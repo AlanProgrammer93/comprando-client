@@ -38,3 +38,11 @@ export const getPublications = async (page, token) =>
         }
     )
 
+export const getUserAndPublications = async (data, token) => 
+    await clientAxios.post('/posts/getUserAndPublications',
+        data,
+        {
+            headers: { token }
+        }
+    )
+

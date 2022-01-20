@@ -1,0 +1,10 @@
+.BarChats {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  z-index: 999;
+  align-items: flex-end;
+  height: 0;
+}
+

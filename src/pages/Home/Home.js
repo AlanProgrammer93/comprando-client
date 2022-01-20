@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from 'react-router-dom';
@@ -7,17 +7,20 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar'
 import HomeLeft from '../../components/Home/HomeLeft/HomeLeft';
 import PostModal from '../../components/PostModal/PostModal';
-import { getPublications } from '../../api/Publication';
+import BarChats from '../../components/BarChats/BarChats';
 
-import './Home.css'
+import { getPublications } from '../../api/Publication';
+import { addChat } from '../../api/Message';
 import calculateTime from '../../utils/HandleTime';
 
+import './Home.css'
 
 const Home = () => {
+    const dispatch = useDispatch()
     const [posts, setPosts] = useState([]);
 
     const [showPostModal, setShowPostModal] = useState(false);
-    const { user } = useSelector((state) => ({ ...state }));
+    const { user, chats } = useSelector((state) => ({ ...state }));
 
     const token = localStorage.getItem('token')
 
@@ -32,12 +35,35 @@ const Home = () => {
             })
     }, [token])
 
+    const showChat = (user) => {
+        addChat(user._id, token)
+            .then(res => {
+                const newChat = {
+                    id: user._id,
+                    username: user.username,
+                    /* urlPhot: 'sadgsdg', */
+                    messages: res.data.chat.messages,
+                    active: true
+                }
+                dispatch({
+                    type: "ADD_CHAT",
+                    payload: [...chats, newChat]
+                });
+            })
+    }
+
     return (
         <div>
-            {console.log(user)}
+            {console.log("USER ", user)}
+            {console.log("CHATS ", chats)}
+            {console.log("POSTS ", posts)}
+
             <Navbar />
             {
                 showPostModal && <PostModal setShowPostModal={setShowPostModal} />
+            }
+            {
+                chats && <BarChats />
             }
             <div className="Home">
                 <div className="Home-left">
@@ -62,23 +88,32 @@ const Home = () => {
                                     }
                                 </Carousel>
                                 <div className='postedBy'>
-                                    <Link to={'/'}>{post.user.username}</Link>
+                                    <Link to={`/profile/${post.user._id}`}>{post.user.username}</Link>
                                     <span>{calculateTime(post.updatedAt)}</span>
                                 </div>
                                 <p className='postDescription'>{post.description}</p>
-                                <button className="post-send-message">
-                                    Enviar Mensaje
-                                </button>
+                                {
+                                    user?.id !== post.user._id &&  (
+                                        <button onClick={() => showChat(post.user)} className="post-send-message">
+                                            Enviar Mensaje
+                                        </button>
+                                    )
+                                    
+                                }
                             </div>
                         )) : (
                             <p>No Hay Publicaciones</p>
                         )
                     }
-
                 </div>
 
                 <div className="Home-right">
                     right
+                    {
+                        chats.map(res => (
+                            <p>{res.username}</p>
+                        ))
+                    }
                 </div>
             </div>
         </div>

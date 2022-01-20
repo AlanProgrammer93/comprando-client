@@ -22,8 +22,6 @@ const Auth = () => {
 
     const { username, email, password, confirmPassword } = authState;
 
-
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setAuthState(prev => ({ ...prev, [name]: value }));

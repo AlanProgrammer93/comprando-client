@@ -1,0 +1,27 @@
+.ProfilePost-container {
+    display: flex;
+    margin: 15px;
+}
+.ProfilePost-container .carousel-root {
+    width: 25%;
+}
+.post-details {
+    width: 50%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.post-details h3 {
+    font-size: 15px;
+    font-weight: 500;
+}
+.post-details p {
+    font-size: 15px;
+}
+.post-details span {
+    font-size: 10px;
+}
+.post-options {
+    width: 25%;
+}
